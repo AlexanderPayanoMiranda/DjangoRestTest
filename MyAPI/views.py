@@ -43,6 +43,9 @@ class pais(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
+
+
+
 def index(request):
     if request.method == 'GET':
         return HttpResponse('Index')

@@ -5,7 +5,8 @@ from MyAPI.views import index
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('', index, name='index'),
-    path('MyAPI/', include(myapi_urls)),
-    path('', include('todos.urls')),
+    path('', index, name='index'),
+    # path('MyAPI/', include(myapi_urls)),
+    path('MyAPI/', include('MyAPI.urls')),
+    path('Todos/', include('todos.urls')),
 ]

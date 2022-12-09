@@ -10,10 +10,10 @@ urlpatterns = router.urls
 
 # Testing with HTTPie
 # GET
-# http://127.0.0.1:8000/api/todos/
-# http://127.0.0.1:8000/api/todos/1
+# http://127.0.0.1:8000/Todos/api/todos
+# http://127.0.0.1:8000/Todos/api/todos/1
 # POST
-# http://127.0.0.1:8000/api/todos/
+# http://127.0.0.1:8000/Todos/api/todos
 # In body using JSON as an example use:
 # {
 #     "title": "Todo - Comprar leche",
@@ -21,7 +21,7 @@ urlpatterns = router.urls
 #     "status": 0
 # }
 # PUT
-# http://127.0.0.1:8000/api/todos/1
+# http://127.0.0.1:8000/Todos/api/todos/1
 # In body using JSON as an example modify the resource with id=1:
 # {
 #     "title": "Todo - Comprar cajas de leche",
@@ -29,7 +29,7 @@ urlpatterns = router.urls
 #     "status": 0
 # }
 # PATCH
-# http://127.0.0.1:8000/api/todos/1
+# http://127.0.0.1:8000/Todos/api/todos/1
 # In body using JSON as an example modify the resource with id=1:
 # {
 #     "title": "Todo - Comprar leche",
@@ -37,4 +37,4 @@ urlpatterns = router.urls
 #     "status": 0
 # }
 # DELETE
-# http://127.0.0.1:8000/api/todos/1
+# http://127.0.0.1:8000/Todos/api/todos/1
