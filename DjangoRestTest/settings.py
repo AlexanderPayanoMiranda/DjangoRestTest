@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     # Custom Apps
     'MyAPI.apps.MyapiConfig',
+    'todos.apps.TodosConfig',
     # Django Default Apps
     'django.contrib.admin',
     'django.contrib.auth',
