@@ -42,18 +42,33 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Django Rest Framework Apps
-    'rest_framework'
+    'rest_framework',
+    # Django Cors Headers Apps
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    # Django Default Middlewares Part 1
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    # Django Cors Headers Middlewares
+    'corsheaders.middleware.CorsMiddleware',
+    # Django Default Middlewares Part 2
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+# CORS_ALLOWED_ORIGINS = [
+#     "http://127.0.0.1:8000",
+#     "https://8.8.8.8",
+#     "http://sitioweb.com",
+#     "https://otrositio.com",
+# ]
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 ROOT_URLCONF = 'DjangoRestTest.urls'
 

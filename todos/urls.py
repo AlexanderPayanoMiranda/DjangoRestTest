@@ -1,10 +1,12 @@
 from rest_framework import routers
-from todos.api import TodoViewSet
+from todos.api import TodoViewSet, TestTodoViewSet, TestValidationViewSet
 
 # Adding trailing_slash=False that caused error that made PATCH and PUT to fail
 router = routers.DefaultRouter(trailing_slash=False)
 
 router.register('api/todos', TodoViewSet, 'todos')
+router.register('api/test/todos', TestTodoViewSet, 'test_todos')
+router.register('api/validation', TestValidationViewSet, 'test_validation')
 
 urlpatterns = router.urls
 
