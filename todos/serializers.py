@@ -20,17 +20,17 @@ class TodoSerializer(serializers.ModelSerializer):
     #         raise serializers.ValidationError("El body no puede contener el simbolo $")
     #     return value
 
-    def validate_status(self, value):
-        if value not in [0, 1, 2, 3]:
-            raise serializers.ValidationError("El status solo puede tener de valores 0, 1, 2, 3")
-        return value
-
-    def validate(self, data):
-        title = data.get('title')
-        body = data.get('body')
-        if "$" in title or "$" in body:
-            raise serializers.ValidationError("El titulo y el body no pueden contener el simbolo $")
-        return data
+    # def validate_status(self, value):
+    #     if value not in [0, 1, 2, 3]:
+    #         raise serializers.ValidationError("El status solo puede tener de valores 0, 1, 2, 3")
+    #     return value
+    #
+    # def validate(self, data):
+    #     title = data.get('title')
+    #     body = data.get('body')
+    #     if "$" in title or "$" in body:
+    #         raise serializers.ValidationError("El titulo y el body no pueden contener el simbolo $")
+    #     return data
 
     class Meta:
         model = Todo

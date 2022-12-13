@@ -1,14 +1,34 @@
-from rest_framework import routers
-from todos.api import TodoViewSet, TestTodoViewSet, TestValidationViewSet
+from rest_framework import (routers)
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView, TokenRefreshView
+)
+from django.urls import (path)
+from todos.api import (
+    TodoViewSet, TestTodoViewSet, TestValidationViewSet
+)
+from todos.api import (
+    AllTodo, GetAllTodo, DeleteAllTodo,
+    OneTodo, patch
+)
 
 # Adding trailing_slash=False that caused error that made PATCH and PUT to fail
 router = routers.DefaultRouter(trailing_slash=False)
 
-router.register('api/todos', TodoViewSet, 'todos')
-router.register('api/test/todos', TestTodoViewSet, 'test_todos')
-router.register('api/validation', TestValidationViewSet, 'test_validation')
+router.register('api/v1/todos', TodoViewSet, 'todos')
+router.register('api/v1/test/todos', TestTodoViewSet, 'test_todos')
+router.register('api/v1/validation', TestValidationViewSet, 'test_validation')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('api/v1/todos/getAll', GetAllTodo.as_view(), name='get_all'),
+    path('api/v1/todos/deleteAll', DeleteAllTodo.as_view(), name='delete_all'),
+    path('api/token', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/v2/todos', AllTodo.as_view(), name='fullView'),
+    path('api/v2/todos/<int:pk>', OneTodo.as_view(), name='oneTodo'),
+    path('api/v2/todos/patch/<int:pk>', patch, name='patch'),
+]
+
+urlpatterns += router.urls
 
 # Testing with HTTPie
 # GET
