@@ -4,7 +4,9 @@ from rest_framework_simplejwt.views import (
 )
 from django.urls import (path)
 from todos.api import (
-    TodoViewSet, TestTodoViewSet, TestValidationViewSet
+    TodoViewSet, TestTodoViewSet,
+    TestValidationViewSet,
+    TodoViewSetCustom
 )
 from todos.api import (
     AllTodo, GetAllTodo, DeleteAllTodo,
@@ -17,6 +19,7 @@ router = routers.DefaultRouter(trailing_slash=False)
 router.register('api/v1/todos', TodoViewSet, 'todos')
 router.register('api/v1/test/todos', TestTodoViewSet, 'test_todos')
 router.register('api/v1/validation', TestValidationViewSet, 'test_validation')
+router.register('api/v3/todos', TodoViewSetCustom, 'todos_custom')
 
 urlpatterns = [
     path('api/v1/todos/getAll', GetAllTodo.as_view(), name='get_all'),

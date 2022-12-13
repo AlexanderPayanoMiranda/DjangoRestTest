@@ -1,18 +1,29 @@
 from django.http import Http404
 # from django.shortcuts import get_object_or_404
-from rest_framework import viewsets, permissions
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import viewsets, permissions, filters
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.views import APIView, status
 from rest_framework.response import Response
 from todos.models import Todo, TestValidation
 from todos.serializers import TodoSerializer, TestTodoSerializer, TestValidationSerializer
+from todos.pagination import StandardResultsSetPagination
 
 
 class TodoViewSet(viewsets.ModelViewSet):
     queryset = Todo.objects.all()
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     serializer_class = TodoSerializer
+    pagination_class = StandardResultsSetPagination
+    # Mixed filters
+    filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
+    # filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'body']
+    # filter_backends = [DjangoFilterBackend]
+    filterset_fields = ['title', 'body']
+    # filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['id', 'title', 'body', 'created_at']
 
 
 class OneTodo(APIView):
@@ -118,3 +129,90 @@ class TestValidationViewSet(viewsets.ModelViewSet):
     queryset = TestValidation.objects.all()
     permission_classes = [permissions.AllowAny]
     serializer_class = TestValidationSerializer
+
+
+class TodoViewSetCustom(viewsets.ModelViewSet):
+    queryset = Todo.objects.all()
+    pagination_class = StandardResultsSetPagination
+    # filter_backends = [filters.SearchFilter]
+    # search_fields = ['title', 'body']
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_fields = ['title', 'body']
+    filter_backends = [filters.OrderingFilter]
+    ordering_fields = ['id', 'title', 'body', 'created_at']
+
+    def get_serializer_class(self):
+        return TodoSerializer
+
+    # Pagination with Values from settings.py
+    def list(self, request):
+        queryset = self.filter_queryset(self.get_queryset())
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer_class = self.get_serializer_class()
+            serializer = serializer_class(page, many=True)
+            return self.get_paginated_response(serializer.data)
+        return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    # List function to work with filters
+    # def list(self, request):
+    #     queryset = self.filter_queryset(self.get_queryset())
+    #     serializer = TodoSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    # def list(self, request):
+    #     queryset = Todo.objects.all()
+    #     serializer = TodoSerializer(queryset, many=True)
+    #     return Response(serializer.data)
+
+    # Pagination with Values from settings.py
+    # def list(self, request):
+    #     page = self.paginate_queryset(self.queryset)
+    #     if page is not None:
+    #         serializer_class = self.get_serializer_class()
+    #         serializer = serializer_class(page, many=True)
+    #         return self.get_paginated_response(serializer.data)
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
+
+    def retrieve(self, request, pk=None):
+        queryset = Todo.objects.all()
+        todo = get_object_or_404(queryset, pk=pk)
+        serializer = TodoSerializer(todo)
+        return Response(serializer.data)
+
+    def create(self, request):
+        if isinstance(request.data, list):
+            serializer = TodoSerializer(data=request.data, many=True)
+        else:
+            serializer = TodoSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def update(self, request, pk=None):
+        queryset = Todo.objects.all()
+        todo = get_object_or_404(queryset, pk=pk)
+        serializer = TodoSerializer(todo, data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def partial_update(self, request, pk=None):
+        queryset = Todo.objects.all()
+        todo = get_object_or_404(queryset, pk=pk)
+        serializer = TodoSerializer(todo, data=request.data, partial=True)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, pk=None):
+        queryset = Todo.objects.all()
+        todo = get_object_or_404(queryset, pk=pk)
+        todo.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
