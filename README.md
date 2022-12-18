@@ -3,7 +3,9 @@ ___
 Docs for setting up this project.
 ## 1. Instalar Python
 ### 1.1. Instalar PIP
+#### 1.1.1. Descargar get-pip.py
 > curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py
+#### 1.1.1. Ejecutar get-pip.py
 > python get-pip.py
 ___
 ## 2. Instalar virtualenv
@@ -22,7 +24,7 @@ ___
 ## 5. Realizar migraciones
 ### 5.1. Configurar settings para el uso de la base de datos, en settings.py modificar lo siguiente de acuerdo a lo necesario:
 ```json lines
-DATABASES = {
+"DATABASES" = {
     'default': {
         'ENGINE': 'django.db.backends.YOUR_DB_ENGINE',
         'NAME': 'DB_NAME',
