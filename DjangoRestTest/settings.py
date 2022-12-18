@@ -15,7 +15,6 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.1/howto/deployment/checklist/
 
@@ -27,6 +26,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
+AUTH_USER_MODEL = 'LoginUser.User'
 
 # Application definition
 
@@ -34,7 +34,11 @@ INSTALLED_APPS = [
     # Custom Apps
     'MyAPI.apps.MyapiConfig',
     'todos.apps.TodosConfig',
+    'TodoLimited.apps.TodolimitedConfig',
     'users.apps.UsersConfig',
+    'GViews.apps.GviewsConfig',
+    'Persona.apps.PersonaConfig',
+    'LoginUser.apps.LoginuserConfig',
     # Django Default Apps
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,14 +46,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # Django Filter Apps
+    'django_filters',
     # Django Rest Framework Apps
     'rest_framework',
+    'rest_framework.authtoken',
     # Django Cors Headers Apps
     'corsheaders',
     # Django Rest Framework JWT Apps
     'rest_framework_simplejwt',
-    # Django Filter Apps
-    'django_filters',
+    # Django Rest Framework YASG
+    'drf_yasg',
+    # Django Rest Framework Spectacular
+    'drf_spectacular',
 ]
 
 MIDDLEWARE = [
@@ -73,6 +82,26 @@ REST_FRAMEWORK = {
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 2,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
+    'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.ScopedRateThrottle',
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle',
+    ],
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '100/day',
+        'user': '1000/days',
+        'limited_todo_limit': '5/min'
+    },
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
+
+# Spectacular Settings
+SPECTACULAR_SETTINGS = {
+    "TITLE": "Your Project API",
+    "DESCRIPTION": "Your Project Description",
+    "VERSION": "1.0.0",
+    "SERVE_INCLUDE_SCHEMA": False,
+    # Other Spectacular Settings
 }
 
 # CORS_ALLOWED_ORIGINS = [
@@ -104,7 +133,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'DjangoRestTest.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
@@ -118,7 +146,6 @@ DATABASES = {
         'PORT': '3306'
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
@@ -138,7 +165,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.1/topics/i18n/
 
@@ -149,7 +175,6 @@ TIME_ZONE = 'America/Lima'
 USE_I18N = True
 
 USE_TZ = True
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
