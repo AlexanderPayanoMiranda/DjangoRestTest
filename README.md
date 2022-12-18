@@ -23,18 +23,20 @@ ___
 ___
 ## 5. Realizar migraciones
 ### 5.1. Configurar settings para el uso de la base de datos, en settings.py modificar lo siguiente de acuerdo a lo necesario:
-```json lines
-"DATABASES" = {
-    'default': {
-        'ENGINE': 'django.db.backends.YOUR_DB_ENGINE',
-        'NAME': 'DB_NAME',
-        'USER': 'DB_USER',
-        'PASSWORD': 'DB_PASSWORD',
-        'HOST': 'DB_HOST',
-        'PORT': 'DB_PORT'
+```djangourlpath
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.YOUR_DB_ENGINE",
+        "NAME": "DB_NAME",
+        "USER": "DB_USER",
+        "PASSWORD": "DB_PASSWORD",
+        "HOST": "DB_HOST",
+        "PORT": "DB_PORT"
     }
 }
 ```
+
+Lo anterior se encuentra en la configuración de DATABASES.
 #### 5.1.1. Crear la base de datos
 Crear la base de datos antes de poder realizar las migraciones.  
 ### 5.2. Revisar si no existen migraciones no registradas
